@@ -21,7 +21,7 @@ class Client extends Actor {
       context.become(data(nk))
 
       //      TODO: Encrypt message
-      val m = EncryptedMessage("What")
+      val m = add(2, 3)
       val M = ServiceRequest(c, m, t)
 
       //      Send service request

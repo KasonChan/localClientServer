@@ -4,8 +4,8 @@ import Actors._
 import akka.actor.{ActorRef, ActorSystem, Props}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 /**
  * Created by kasonchan on 1/20/15.
@@ -25,10 +25,7 @@ object Application {
       k.tell(SessionKeyRequest(c1, a), c1)
     }
 
-    f1 onComplete {
-      case Success(s) => println("main: c1 sent and received k")
-      case Failure(t) => println("main: " + t.getMessage)
-    }
+    Await.result(f1, 5 seconds)
 
     system.shutdown()
   }
