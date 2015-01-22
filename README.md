@@ -9,6 +9,7 @@ Assumptions
 -----------
 
 I assume you have installed the following:
+
 *  [Scala](http://www.scala-lang.org/download/)
 *  [SBT](http://www.scala-sbt.org/download.html)
 
@@ -16,6 +17,7 @@ Running the Code
 ----------------
 
 Follow these steps to run the code:
+
 1.  `cd` into the _this_ directory.
 2.  Enter `sbt run` to execute.
 
