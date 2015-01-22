@@ -8,8 +8,13 @@ import scala.concurrent.{Await, Future}
 
 /**
  * Created by kasonchan on 1/20/15.
+ * Mixin the log member into actor
  */
-class Client extends Actor {
+class Client extends Actor with akka.actor.ActorLogging {
+  override def preStart() = {
+    log.debug("Starting")
+  }
+
   def receive = {
     data("Default")
   }
@@ -31,13 +36,13 @@ class Client extends Actor {
 
       Await.result(f, 5 seconds)
 
-      println(self.path.name + ": {" + c.path.name + ", " + s.path.name + ", " + nk + t + "}")
+      log.info("{" + c.path.name + ", " + s.path.name + ", " + nk + ", " + t + "}")
     }
     case ServiceReply(c, s, r) => {
-      println(self.path.name + ": {" + c.path.name + ", " + s.path.name + ", " + r + "}")
+      log.info("{" + c.path.name + ", " + s.path.name + ", " + r + "}")
     }
     case m => {
-      println(self.path.name + ": [Pattern mismatched] " + m + " " + k)
+      log.warning("Received unknown message: " + m)
     }
   }
 }

@@ -1,6 +1,7 @@
 package Actors
 
 import akka.actor.Actor
+import akka.event.Logging
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -10,6 +11,12 @@ import scala.concurrent.{Await, Future}
  * Created by kasonchan on 1/20/15.
  */
 class Application extends Actor {
+  val log = Logging(context.system, this)
+
+  override def preStart() = {
+    log.debug("Starting")
+  }
+
   def receive = {
     case ServiceRequest(c, m, t) => {
       //      TODO: Encrypt message
@@ -30,9 +37,11 @@ class Application extends Actor {
 
       Await.result(f, 5 seconds)
 
-      println(self.path.name + ": {" + c.path.name + ", " + m + ", " + t + "}")
+      log.info("{" + c.path.name + ", " + m + ", " + t + "}")
     }
-    case m => println(self.path.name + ": " + m)
+    case m => {
+      log.warning("Received unknown message: " + m)
+    }
   }
 
   /**

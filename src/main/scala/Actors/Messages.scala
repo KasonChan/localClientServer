@@ -9,7 +9,8 @@ case class SessionKeyRequest(c: ActorRef, s: ActorRef)
 
 case class EncryptedToken(c: ActorRef, s: ActorRef, k: String)
 
-case class SessionKeyReply(c: ActorRef, s: ActorRef, k: String, t: EncryptedToken)
+case class SessionKeyReply(c: ActorRef, s: ActorRef, k: String,
+                           t: EncryptedToken)
 
 case class EncryptedMessage(a: String)
 
