@@ -16,8 +16,8 @@ Running the Code
 ----------------
 
 Follow these steps to run the code:
-1. `cd` into the _this_ directory.
-1. Enter `sbt run` to execute.
+1.  `cd` into the _this_ directory.
+2.  Enter `sbt run` to execute.
 
 References
 ----------
