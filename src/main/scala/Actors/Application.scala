@@ -3,10 +3,6 @@ package actors
 import akka.actor.Actor
 import akka.event.Logging
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-
 /**
  * Created by kasonchan on 1/20/15.
  */
@@ -19,6 +15,7 @@ class Application extends Actor {
 
   def receive = {
     case ServiceRequest(c, m, t) => {
+
       //      TODO: Encrypt message
       val r = m match {
         case add(x, y) => add(x, y).toString
@@ -31,11 +28,7 @@ class Application extends Actor {
 
       val R = ServiceReply(c, t.s, r)
 
-      val f = Future {
-        sender() ! R
-      }
-
-      Await.result(f, 5 seconds)
+      sender() ! R
 
       log.info("{" + c.path.name + ", " + m + ", " + t + "}")
     }

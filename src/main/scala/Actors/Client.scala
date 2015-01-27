@@ -1,41 +1,52 @@
 package actors
 
-import akka.actor.Actor
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import akka.actor.{Actor, ActorRef}
 
 /**
  * Created by kasonchan on 1/20/15.
  * Mixin the log member into actor
  */
 class Client extends Actor with akka.actor.ActorLogging {
+  //  TODO: Random generate key
+  private val privateK = EDKey(139, 221)
+
   override def preStart() = {
     log.debug("Starting")
   }
 
   def receive = {
-    data("Default")
+    data("Default", EDKey(-1, -1))
   }
 
-  //  k = key
-  def data(k: String): Receive = {
-    case SessionKeyReply(c, s, nk, t) => {
+  def data(ns: String, nk: EDKey): Receive = {
+    case SessionKeyRequest(c: ActorRef, s: ActorRef) => {
+      if (c == self) {
+        context.become(data(s.path.name, EDKey(0, 0)))
+        log.info("{" + c.path.name + ", " + s.path.name + "}")
+      }
+      else {
+        context.become(data("NULL", EDKey(-1, -1)))
+        log.info("{" + c.path.name + ", " + s.path.name + "}")
+      }
+    }
 
-      context.become(data(nk))
+    case SessionKeyReply(c, s, k, t) => {
+      context.become(data(s.path.name, k))
 
-      //      TODO: Encrypt message
-      val m = add(2, 3)
-      val M = ServiceRequest(c, m, t)
+      if ((c == self) && (ns == s.path.name)) {
 
-      //      Send service request
-      val f = Future {
+        //      TODO: Encrypt message
+        val m = add(2, 3)
+        val M = ServiceRequest(c, m, t)
+
+        //      Send service request
         s ! M
       }
+      else {
+        log.warning("Received unknown session key reply message")
+      }
 
-      Await.result(f, 5 seconds)
-
+      context.become(data("Default", EDKey(-1, -1)))
       log.info("{" + c.path.name + ", " + s.path.name + ", " + nk + ", " + t + "}")
     }
     case ServiceReply(c, s, r) => {

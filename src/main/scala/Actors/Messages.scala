@@ -5,11 +5,13 @@ import akka.actor.ActorRef
 /**
  * Created by kasonchan on 1/20/15.
  */
+case class EDKey(x: Int, n: Int)
+
 case class SessionKeyRequest(c: ActorRef, s: ActorRef)
 
-case class EncryptedToken(c: ActorRef, s: ActorRef, k: String)
+case class EncryptedToken(c: ActorRef, s: ActorRef, k: EDKey)
 
-case class SessionKeyReply(c: ActorRef, s: ActorRef, k: String,
+case class SessionKeyReply(c: ActorRef, s: ActorRef, k: EDKey,
                            t: EncryptedToken)
 
 case class EncryptedMessage(a: String)
