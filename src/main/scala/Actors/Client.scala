@@ -7,7 +7,6 @@ import akka.actor.{Actor, ActorRef}
  * Mixin the log member into actor
  */
 class Client extends Actor with akka.actor.ActorLogging {
-  //  TODO: Random generate key
   private val privateK = EDKey(139, 221)
 
   override def preStart() = {
@@ -34,8 +33,6 @@ class Client extends Actor with akka.actor.ActorLogging {
       context.become(data(s.path.name, k))
 
       if ((c == self) && (ns == s.path.name)) {
-
-        //      TODO: Encrypt message
         val m = add(2, 3)
         val M = ServiceRequest(c, m, t)
 

@@ -10,9 +10,7 @@ import scala.concurrent.duration._
  * Created by kasonchan on 1/20/15.
  */
 object Application {
-
   def main(args: Array[String]) {
-
     // Declare actor system
     val system = ActorSystem("ClientServer")
 

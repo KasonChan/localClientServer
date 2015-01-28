@@ -16,7 +16,6 @@ class Application extends Actor {
   def receive = {
     case ServiceRequest(c, m, t) => {
 
-      //      TODO: Encrypt message
       val r = m match {
         case add(x, y) => add(x, y).toString
         case subtract(x, y) => subtract(x, y).toString
